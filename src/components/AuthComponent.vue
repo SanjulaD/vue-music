@@ -1,7 +1,12 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
   <!-- Auth Modal -->
-  <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="modal">
+  <div
+    class="fixed z-10 inset-0 overflow-y-auto"
+    id="modal"
+    :class="{ hidden: !authModelShow }"
+  >
     <div
       class="
         flex
@@ -44,7 +49,10 @@
           <div class="flex justify-between items-center pb-4">
             <p class="text-2xl font-bold">Your Account</p>
             <!-- Modal Close Button -->
-            <div class="modal-close cursor-pointer z-50">
+            <div
+              class="modal-close cursor-pointer z-50"
+              @click.prevent="toggleAuthModel"
+            >
               <i class="fas fa-times"></i>
             </div>
           </div>
@@ -288,7 +296,17 @@
 </template>
 
 <script>
-export default {};
+import { mapMutations, mapState } from 'vuex';
+
+export default {
+  name: 'AuthComponent',
+  computed: {
+    ...mapState(['authModelShow']),
+  },
+  methods: {
+    ...mapMutations(['toggleAuthModel']),
+  },
+};
 </script>
 
 <style>

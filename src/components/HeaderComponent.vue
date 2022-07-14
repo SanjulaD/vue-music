@@ -10,7 +10,9 @@
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
           <li>
-            <a class="px-2 text-white" href="#">Login / Register</a>
+            <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModel"
+              >Login / Register</a
+            >
           </li>
           <li>
             <a class="px-2 text-white" href="#">Manage</a>
@@ -22,13 +24,12 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'HeaderComponent',
   methods: {
-    toggleAuthModel() {
-      this.$store.state.authModelShow = !this.$store.state.authModelShow;
-      console.log(this.$store.state.authModelShow);
-    },
+    ...mapMutations(['toggleAuthModel']),
   },
 };
 </script>
