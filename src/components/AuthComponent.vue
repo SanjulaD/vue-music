@@ -146,8 +146,8 @@
           <!-- Registration Form -->
           <VeeForm
             v-show="tab === 'register'"
-            @submit="submit"
             :validation-schema="schema"
+           @submit="onSubmit"
           >
             <!-- Name -->
             <div class="mb-3">
@@ -197,7 +197,8 @@
             <!-- Age -->
             <div class="mb-3">
               <label class="inline-block mb-2">Age</label>
-              <input
+              <VeeField
+                name="age"
                 type="number"
                 class="
                   block
@@ -212,11 +213,12 @@
                   rounded
                 "
               />
+              <ErrorMessage name="age" class="text-red-600" />
             </div>
             <!-- Password -->
             <div class="mb-3">
               <label class="inline-block mb-2">Password</label>
-              <input
+              <VeeField
                 name="password"
                 type="password"
                 class="
@@ -238,7 +240,8 @@
             <!-- Confirm Password -->
             <div class="mb-3">
               <label class="inline-block mb-2">Confirm Password</label>
-              <input
+              <VeeField
+              name="confirmPassword"
                 type="password"
                 class="
                   block
@@ -286,7 +289,6 @@
               <label class="inline-block">Accept terms of service</label>
             </div>
             <button
-              type="submit"
               class="
                 block
                 w-full
@@ -320,6 +322,7 @@ export default {
       email: yup.string().required().email(),
       password: yup.string().required().min(8),
       name: yup.string().required(),
+      age: yup.number().required(),
     });
     return {
       tab: 'login',
@@ -341,6 +344,10 @@ export default {
         return true;
       }
       return 'This is required';
+    },
+    onSubmit(values) {
+      // Submit values to API...
+      console.log(values);
     },
   },
 };
