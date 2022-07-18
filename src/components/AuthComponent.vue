@@ -144,11 +144,16 @@
             </button>
           </form>
           <!-- Registration Form -->
-          <form v-show="tab === 'register'">
+          <VeeForm
+            v-show="tab === 'register'"
+            @submit="submit"
+            :validation-schema="schema"
+          >
             <!-- Name -->
             <div class="mb-3">
               <label class="inline-block mb-2">Name</label>
-              <input
+              <VeeField
+                name="name"
                 type="text"
                 class="
                   block
@@ -163,12 +168,15 @@
                   rounded
                 "
                 placeholder="Enter Name"
+                :rules="isRequired"
               />
+              <ErrorMessage name="name" class="text-red-600" />
             </div>
             <!-- Email -->
             <div class="mb-3">
               <label class="inline-block mb-2">Email</label>
-              <input
+              <VeeField
+                name="email"
                 type="email"
                 class="
                   block
@@ -184,6 +192,7 @@
                 "
                 placeholder="Enter Email"
               />
+              <ErrorMessage name="email" class="text-red-600" />
             </div>
             <!-- Age -->
             <div class="mb-3">
@@ -208,6 +217,7 @@
             <div class="mb-3">
               <label class="inline-block mb-2">Password</label>
               <input
+                name="password"
                 type="password"
                 class="
                   block
@@ -223,6 +233,7 @@
                 "
                 placeholder="Password"
               />
+              <ErrorMessage name="password" class="text-red-600" />
             </div>
             <!-- Confirm Password -->
             <div class="mb-3">
@@ -290,7 +301,7 @@
             >
               Submit
             </button>
-          </form>
+          </VeeForm>
         </div>
       </div>
     </div>
@@ -299,19 +310,38 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
+import { Field as VeeField, Form as VeeForm, ErrorMessage } from 'vee-validate';
+import * as yup from 'yup';
 
 export default {
   name: 'AuthComponent',
   data() {
+    const schema = yup.object({
+      email: yup.string().required().email(),
+      password: yup.string().required().min(8),
+      name: yup.string().required(),
+    });
     return {
       tab: 'login',
+      schema,
     };
+  },
+  components: {
+    VeeField,
+    VeeForm,
+    ErrorMessage,
   },
   computed: {
     ...mapState(['authModelShow']),
   },
   methods: {
     ...mapMutations(['toggleAuthModel']),
+    isRequired(value) {
+      if (value && value.trim()) {
+        return true;
+      }
+      return 'This is required';
+    },
   },
 };
 </script>
